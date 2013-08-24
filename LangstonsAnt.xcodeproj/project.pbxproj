@@ -20,8 +20,9 @@
 		62C0855317C95EAB00CFA8AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C0853217C95EAB00CFA8AB /* Foundation.framework */; };
 		62C0855417C95EAB00CFA8AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C0853617C95EAB00CFA8AB /* UIKit.framework */; };
 		62C0855C17C95EAB00CFA8AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62C0855A17C95EAB00CFA8AB /* InfoPlist.strings */; };
-		62C0855E17C95EAB00CFA8AB /* LangstonsAntTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0855D17C95EAB00CFA8AB /* LangstonsAntTests.m */; };
 		62C0856817C96ADE00CFA8AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C0856717C96ADE00CFA8AB /* QuartzCore.framework */; };
+		62C0856A17C96FAD00CFA8AB /* LAAntTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0856917C96FAD00CFA8AB /* LAAntTests.m */; };
+		62C0857017C971CF00CFA8AB /* LAAnt.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0856F17C971CF00CFA8AB /* LAAnt.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,8 +54,10 @@
 		62C0855117C95EAB00CFA8AB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		62C0855917C95EAB00CFA8AB /* LangstonsAntTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LangstonsAntTests-Info.plist"; sourceTree = "<group>"; };
 		62C0855B17C95EAB00CFA8AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		62C0855D17C95EAB00CFA8AB /* LangstonsAntTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LangstonsAntTests.m; sourceTree = "<group>"; };
 		62C0856717C96ADE00CFA8AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		62C0856917C96FAD00CFA8AB /* LAAntTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAAntTests.m; sourceTree = "<group>"; };
+		62C0856E17C971CF00CFA8AB /* LAAnt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAAnt.h; sourceTree = "<group>"; };
+		62C0856F17C971CF00CFA8AB /* LAAnt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAAnt.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,12 +119,8 @@
 		62C0853817C95EAB00CFA8AB /* LangstonsAnt */ = {
 			isa = PBXGroup;
 			children = (
-				62C0854117C95EAB00CFA8AB /* LAAppDelegate.h */,
-				62C0854217C95EAB00CFA8AB /* LAAppDelegate.m */,
-				62C0854417C95EAB00CFA8AB /* Main.storyboard */,
-				62C0854717C95EAB00CFA8AB /* LAViewController.h */,
-				62C0854817C95EAB00CFA8AB /* LAViewController.m */,
-				62C0854A17C95EAB00CFA8AB /* Images.xcassets */,
+				62C0856D17C971A200CFA8AB /* the brains */,
+				62C0856B17C96FBD00CFA8AB /* boring stuff */,
 				62C0853917C95EAB00CFA8AB /* Supporting Files */,
 			);
 			path = LangstonsAnt;
@@ -141,8 +140,8 @@
 		62C0855717C95EAB00CFA8AB /* LangstonsAntTests */ = {
 			isa = PBXGroup;
 			children = (
-				62C0855D17C95EAB00CFA8AB /* LangstonsAntTests.m */,
 				62C0855817C95EAB00CFA8AB /* Supporting Files */,
+				62C0856917C96FAD00CFA8AB /* LAAntTests.m */,
 			);
 			path = LangstonsAntTests;
 			sourceTree = "<group>";
@@ -154,6 +153,28 @@
 				62C0855A17C95EAB00CFA8AB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		62C0856B17C96FBD00CFA8AB /* boring stuff */ = {
+			isa = PBXGroup;
+			children = (
+				62C0854117C95EAB00CFA8AB /* LAAppDelegate.h */,
+				62C0854217C95EAB00CFA8AB /* LAAppDelegate.m */,
+				62C0854417C95EAB00CFA8AB /* Main.storyboard */,
+				62C0854717C95EAB00CFA8AB /* LAViewController.h */,
+				62C0854817C95EAB00CFA8AB /* LAViewController.m */,
+				62C0854A17C95EAB00CFA8AB /* Images.xcassets */,
+			);
+			name = "boring stuff";
+			sourceTree = "<group>";
+		};
+		62C0856D17C971A200CFA8AB /* the brains */ = {
+			isa = PBXGroup;
+			children = (
+				62C0856E17C971CF00CFA8AB /* LAAnt.h */,
+				62C0856F17C971CF00CFA8AB /* LAAnt.m */,
+			);
+			name = "the brains";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +277,7 @@
 			files = (
 				62C0853F17C95EAB00CFA8AB /* main.m in Sources */,
 				62C0854317C95EAB00CFA8AB /* LAAppDelegate.m in Sources */,
+				62C0857017C971CF00CFA8AB /* LAAnt.m in Sources */,
 				62C0854917C95EAB00CFA8AB /* LAViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,7 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62C0855E17C95EAB00CFA8AB /* LangstonsAntTests.m in Sources */,
+				62C0856A17C96FAD00CFA8AB /* LAAntTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
