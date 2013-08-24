@@ -9,5 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface LAViewController : UIViewController
+@property (nonatomic, strong) NSMutableArray *gridViews;
+@property (strong, nonatomic) UIView *gridContainer;
+@property (weak, nonatomic) IBOutlet UIButton *resetButton;
+@property (weak, nonatomic) IBOutlet UITextField *gridSizeTextField;
+
+-(void) resetGridWithSize:(int)size;
 
 @end
+
