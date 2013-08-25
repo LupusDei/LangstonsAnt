@@ -23,6 +23,8 @@
 		62C0856817C96ADE00CFA8AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C0856717C96ADE00CFA8AB /* QuartzCore.framework */; };
 		62C0856A17C96FAD00CFA8AB /* LAAntTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0856917C96FAD00CFA8AB /* LAAntTests.m */; };
 		62C0857017C971CF00CFA8AB /* LAAnt.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0856F17C971CF00CFA8AB /* LAAnt.m */; };
+		62C0857317C99DA200CFA8AB /* LAWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0857217C99DA200CFA8AB /* LAWorld.m */; };
+		62C0857517C99DBD00CFA8AB /* LAWorldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0857417C99DBD00CFA8AB /* LAWorldTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,9 @@
 		62C0856917C96FAD00CFA8AB /* LAAntTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAAntTests.m; sourceTree = "<group>"; };
 		62C0856E17C971CF00CFA8AB /* LAAnt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAAnt.h; sourceTree = "<group>"; };
 		62C0856F17C971CF00CFA8AB /* LAAnt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAAnt.m; sourceTree = "<group>"; };
+		62C0857117C99DA200CFA8AB /* LAWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAWorld.h; sourceTree = "<group>"; };
+		62C0857217C99DA200CFA8AB /* LAWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAWorld.m; sourceTree = "<group>"; };
+		62C0857417C99DBD00CFA8AB /* LAWorldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAWorldTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +147,7 @@
 			children = (
 				62C0855817C95EAB00CFA8AB /* Supporting Files */,
 				62C0856917C96FAD00CFA8AB /* LAAntTests.m */,
+				62C0857417C99DBD00CFA8AB /* LAWorldTests.m */,
 			);
 			path = LangstonsAntTests;
 			sourceTree = "<group>";
@@ -173,6 +179,8 @@
 			children = (
 				62C0856E17C971CF00CFA8AB /* LAAnt.h */,
 				62C0856F17C971CF00CFA8AB /* LAAnt.m */,
+				62C0857117C99DA200CFA8AB /* LAWorld.h */,
+				62C0857217C99DA200CFA8AB /* LAWorld.m */,
 			);
 			name = "the brains";
 			sourceTree = "<group>";
@@ -275,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62C0857317C99DA200CFA8AB /* LAWorld.m in Sources */,
 				62C0853F17C95EAB00CFA8AB /* main.m in Sources */,
 				62C0854317C95EAB00CFA8AB /* LAAppDelegate.m in Sources */,
 				62C0857017C971CF00CFA8AB /* LAAnt.m in Sources */,
@@ -287,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				62C0856A17C96FAD00CFA8AB /* LAAntTests.m in Sources */,
+				62C0857517C99DBD00CFA8AB /* LAWorldTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
