@@ -8,21 +8,77 @@
 
 #import "LAViewController.h"
 #import <QuartzCore/QuartzCore.h>
-@interface LAViewController ()
 
+#define StepSlow 200000
+
+@interface LAViewController ()
+@property (strong, nonatomic) LAWorld *world;
+@property (strong, nonatomic) LAAnt *ant;
+@property BOOL isRunning;
+@property NSInteger stepCount;
+@property (strong, nonatomic) CADisplayLink *runDisplayLink;
+@property NSTimer *runTimer;
+@property uint stepInterval;
 @end
 
 @implementation LAViewController
-
+dispatch_queue_t runQueue;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self resetGridWithSize:40];
+    [self resetGameWithSize:50];
+    runQueue = dispatch_queue_create("runQueue", nil);
+    self.stepInterval = StepSlow/self.stepIntervalSlider.value;
 }
+- (IBAction)stepIntervalChanged:(id)sender {
+    int i = ceilf(self.stepIntervalSlider.value);
+    i ++;
+    self.stepInterval = StepSlow/i;
+}
+
 - (IBAction)resetButtonPressed:(id)sender {
     NSInteger size = self.gridSizeTextField.text.integerValue;
-    [self resetGridWithSize:size];
+    if (size > 200) {
+        size = 200;
+    }
+    [self resetGameWithSize:size];
     [self.gridSizeTextField resignFirstResponder];
+}
+
+- (IBAction)stepPressed:(id)sender {
+    [self stepAnt];
+}
+
+- (IBAction)runButtonPressed:(id)sender {
+    if (self.isRunning) {
+        self.isRunning = NO;
+        [self.runButton setTitle:@"Run" forState:UIControlStateNormal];
+    }
+    else {
+        self.isRunning = YES;
+        dispatch_async(runQueue, ^{
+            while (self.isRunning) {
+               [self stepAnt];
+                usleep(self.stepInterval);
+            }
+        });
+        [self.runButton setTitle:@"Stop" forState:UIControlStateNormal];
+    }
+}
+
+-(void) displayNewStepCount {
+    [self.stepCountLabel setText:[NSString stringWithFormat:@"Step Count: %d", self.stepCount]];
+}
+
+-(void) stepAnt {
+    [self.ant step];
+}
+
+-(void) resetGameWithSize:(NSInteger)size {
+    [self createAntInWorldWithSize:size];
+    [self resetGridWithSize:self.world.size];
+    self.stepCount = 0;
+    [self displayNewStepCount];
 }
 
 -(void) resetGridWithSize:(NSInteger)gridSize {
@@ -49,15 +105,24 @@
     }
     
     self.gridContainer = [[UIView alloc] initWithFrame:CGRectMake(10, 134, 300, 300)];
-    self.gridContainer.layer.borderWidth = 0.5;
+    self.gridContainer.layer.borderWidth = 0.25;
     self.gridContainer.layer.borderColor = [UIColor blackColor].CGColor;
     [self.view addSubview:self.gridContainer];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void) createAntInWorldWithSize:(NSInteger)size {
+    self.world = [LAWorld worldWithSize:size];
+    self.world.display = self;
+    self.ant = [LAAnt antInWorld:self.world];
 }
 
+#pragma mark World Display Delegate Method
+-(void) updateSquareAtX:(int)x Y:(int)y toColor:(UIColor *)color {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIView *square = [[self.gridViews objectAtIndex:x] objectAtIndex:y];
+        square.backgroundColor = color;
+        self.stepCount ++;
+        [self displayNewStepCount];
+    });
+}
 @end

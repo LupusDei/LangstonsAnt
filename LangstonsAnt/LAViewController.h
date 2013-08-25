@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LAAnt.h"
 
-@interface LAViewController : UIViewController
+@interface LAViewController : UIViewController <LAWorldDisplay>
 @property (nonatomic, strong) NSMutableArray *gridViews;
 @property (strong, nonatomic) UIView *gridContainer;
+@property (weak, nonatomic) IBOutlet UILabel *stepCountLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetButton;
+@property (weak, nonatomic) IBOutlet UIButton *runButton;
 @property (weak, nonatomic) IBOutlet UITextField *gridSizeTextField;
+@property (weak, nonatomic) IBOutlet UISlider *stepIntervalSlider;
 
 -(void) resetGridWithSize:(int)size;
 
