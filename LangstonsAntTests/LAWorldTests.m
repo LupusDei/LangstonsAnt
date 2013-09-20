@@ -8,73 +8,63 @@
 
 #import <XCTest/XCTest.h>
 #import "LAWorld.h"
-@interface LAWorldTests : XCTestCase <LAWorldDisplay>
-@property (nonatomic, strong) LAWorld *world;
-@property UIColor *worldDisplayCalledWithColor;
-@property NSInteger worldDisplayCalledAtX;
-@property NSInteger worldDisplayCalledAtY;
+
+@interface LAWorldTests : XCTestCase {
+    LAWorld *world;
+}
 @end
 
 @implementation LAWorldTests
 
--(void) updateSquareAtX:(int)x Y:(int)y toColor:(UIColor *)color {
-    self.worldDisplayCalledWithColor = color;
-    self.worldDisplayCalledAtX = x;
-    self.worldDisplayCalledAtY = y;
-}
-
-- (void)setUp
-{
-    self.world = [LAWorld worldWithSize:10];
+- (void)setUp {
     [super setUp];
-    // Put setup code here; it will be run once, before the first test case.
+    world = [[LAWorld alloc] initWithSize:30];
 }
 
-- (void)tearDown
-{
-    // Put teardown code here; it will be run once, after the last test case.
+- (void)tearDown {
+    world = nil;
     [super tearDown];
 }
 
--(void) testItCanBeCreatedWithASize {
-    XCTAssertTrue(self.world.size == 10, @"it should have the correct size");
+-(void) testTheWorldHasASize {
+    XCTAssertEqual(30,world.size, @"The world has a size");
 }
 
--(void) testItHasManySquares {
-    XCTAssertTrue([self.world.squares count] == 10, @"the count should have as many arrays as there are rows in the world");
-    XCTAssertTrue([[self.world.squares lastObject] count] == 10, @"each row should have as many arrays as there are collumns in the world");
+-(void) testTheWorldCannotHaveASizeLessThanOne {
+    XCTAssertThrowsSpecificNamed([[LAWorld alloc] initWithSize:0], NSException, NSInvalidArgumentException,@"it can't have a negative size");
 }
 
--(void) testTheSquaresShouldStartAsWhite {
-    XCTAssertTrue([self.world isWhiteSquareAtX:0 Y:0], @"sqaures start out white");
+- (void) testTheWorldDefaultsTheSqauresToWhite {
+    BOOL value = [world valueForPoint:CGPointMake(0, 0)];
+    XCTAssertEqual(LAWhite,value, @"The default value for all squares on the grid is false");
 }
 
--(void) testASquareCanBeBlack {
-    [self.world setBlackSquareAtX:0 Y:0];
-    XCTAssertTrue([self.world isBlackSquareAtX:0 Y:0], @"squares can be black");
-    XCTAssertFalse([self.world isWhiteSquareAtX:0 Y:0], @"black squares are not white");
+- (void) testTheWorldCanHaveBlackSquares {
+    [world setSquareAtPoint:CGPointMake(0, 9) toValue:LABlack];
+    XCTAssertEqual(LABlack,[world valueForPoint:CGPointMake(0, 9)], @"the value for square 0, 9 should be black after it is set to be black");
+    XCTAssertEqual(LAWhite,[world valueForPoint:CGPointMake(0, 0)], @"the value for square 0, 0 should be black after it is set to be black");
 }
 
--(void) testASquareCanBeSetBackToWhite {
-    [self.world setBlackSquareAtX:0 Y:0];
-    [self.world setWhiteSquareAtX:0 Y:0];
-    XCTAssertTrue([self.world isWhiteSquareAtX:0 Y:0], @"it should be white when it is set to white");
+-(void) testItDoesntHaveSquaresOutsideItsBounds {
+    XCTAssertThrowsSpecificNamed([world valueForPoint:CGPointMake(0, 35)], NSException, NSInvalidArgumentException, @"it should not have a value outside the y axis");
+    XCTAssertThrowsSpecificNamed([world valueForPoint:CGPointMake(35, 0)], NSException, NSInvalidArgumentException, @"it should not have a value outside the x axis");
 }
 
--(void) testSettingASquareToBlackInformsAWorldDisplay {
-    self.world.display = self;
-    [self.world setBlackSquareAtX:3 Y:7];
-    XCTAssertEqual(self.worldDisplayCalledWithColor, [UIColor blackColor], @"it tells a display to color a square black");
-    XCTAssertTrue(self.worldDisplayCalledAtX == 3, @"with the correct x");
-    XCTAssertTrue(self.worldDisplayCalledAtY == 7, @"with the correct y");
+- (void) testAWorldWithHalfBlackAndHalfWhiteSquares {
+    LAWorld *smallWorld = [[LAWorld alloc] initWithSize:2];
+    [smallWorld setSquareAtPoint:CGPointMake(0, 1) toValue:LABlack];
+    [smallWorld setSquareAtPoint:CGPointMake(1, 0) toValue:LABlack];
+    XCTAssertEqual(LAWhite,[smallWorld valueForPoint:CGPointMake(0, 0)], @"0,0 is white");
+    XCTAssertEqual(LABlack,[smallWorld valueForPoint:CGPointMake(0, 1)], @"0,0 is black");
+    XCTAssertEqual(LABlack,[smallWorld valueForPoint:CGPointMake(1, 0)], @"0,0 is black");
+    XCTAssertEqual(LAWhite,[smallWorld valueForPoint:CGPointMake(1, 1)], @"0,0 is white");
 }
 
--(void) testSettingASquareToWhiteInformsAWorldDisplay {
-    self.world.display = self;
-    [self.world setWhiteSquareAtX:4 Y:2];
-    XCTAssertEqual(self.worldDisplayCalledWithColor, [UIColor whiteColor], @"it tells a display to color a square black");
-    XCTAssertTrue(self.worldDisplayCalledAtX == 4, @"with the correct x");
-    XCTAssertTrue(self.worldDisplayCalledAtY == 2, @"with the correct y");
+-(void) testItCanToggleTheColorOfASquare {
+    [world toggleSquare:CGPointMake(0, 0)];
+    
+    BOOL value = [world valueForPoint:CGPointMake(0, 0)];
+    XCTAssertEqual(LABlack, value, @"The color was defaulted white, now it is black");
 }
 
 @end

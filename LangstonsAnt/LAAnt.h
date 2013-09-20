@@ -10,22 +10,21 @@
 #import "LAWorld.h"
 
 typedef enum {
-    laNORTH = 0,
-    laEAST = 1,
-    laSOUTH = 2,
-    laWEST = 3
-} laDIRECTION;
+    LANorth,
+    LAWest,
+    LASouth,
+    LAEast
+} LADirection;
+
 
 @interface LAAnt : NSObject
-
 @property (nonatomic, strong) LAWorld *world;
-@property int x;
-@property int y;
-@property laDIRECTION direction;
+@property LADirection direction;
 
++ (LAAnt *)antWithWorld:(LAWorld *)world;
 
-+(LAAnt *) antInWorld:(LAWorld *)world;
-
--(void) step;
+-(CGPoint) position;
+- (void)step;
+- (BOOL)isBlackSquare;
 
 @end

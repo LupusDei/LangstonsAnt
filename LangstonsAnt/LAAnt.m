@@ -9,68 +9,97 @@
 #import "LAAnt.h"
 
 /*    RULES
- The ant starts out facing North
+ The ant starts in the center, facing North
  At a white square, turn 90° left, flip the color of the square, move forward one unit
  At a black square, turn 90° right, flip the color of the square, move forward one unit
  
 */
 
-typedef void (^LADirectionStep)();
-
 @interface LAAnt()
-@property (strong, nonatomic) NSArray *steps;
+@property NSInteger x;
+@property NSInteger y;
+@property double radialDirection;
 @end
 
 @implementation LAAnt
 
--(id) init {
-    self = [super init];
-    if (self) {
-        [self setInstructionsForDirections];
-    }
-    return self;
-}
-
-+(LAAnt *) antInWorld:(LAWorld *)world {
++ (LAAnt *)antWithWorld:(LAWorld *)world {
     LAAnt *ant = [[LAAnt alloc] init];
+    if (!world) {
+        [[[NSException alloc] initWithName:NSInvalidArgumentException
+                                    reason:@"The ant must have a world"
+                                  userInfo:nil] raise];
+    }
     ant.world = world;
-    ant.x = world.size / 2;
-    ant.y = world.size / 2;
-    ant.direction = laNORTH;
+    ant.x = ant.world.size * .5;
+    ant.y = ant.world.size * .5;
+    ant.radialDirection = M_PI_2;
     return ant;
 }
 
--(void) setInstructionsForDirections {
-    LADirectionStep west = ^{self.x--;};
-    LADirectionStep south = ^{self.y++;};
-    LADirectionStep east = ^{self.x++;};
-    LADirectionStep north = ^{self.y--;};
-    self.steps = @[north,east,south,west];
+-(CGPoint) position {
+    return CGPointMake(self.x, self.y);
 }
 
--(void) step {
-    if ([self.world isWhiteSquareAtX:self.x Y:self.y]) {
-        [self.world setBlackSquareAtX:self.x Y:self.y];
-        self.direction = (self.direction - 1) % 4;
-    }
-    else {
-        [self.world setWhiteSquareAtX:self.x Y:self.y];
-        self.direction = (self.direction + 1) % 4;
-    }
-    
-    ((LADirectionStep) [self.steps objectAtIndex:self.direction])();
-    [self warpHorizontally];
-    [self warpVertically];
+- (void)step {
+    CGPoint lastPos = self.position;
+    self.radialDirection += M_PI_2 * [self directionVectorFromSquareColor];
+    self.x = self.x + cos(self.radialDirection);
+    self.y = self.y - sin(self.radialDirection);
+    [self.world toggleSquare:lastPos];
 }
 
--(void) warpHorizontally {
-    self.x = self.x % self.world.size;
-    if (self.x < 0) self.x += self.world.size;
+- (BOOL)isBlackSquare {
+    return [self.world valueForPoint:[self position]];
 }
 
--(void) warpVertically {
-    self.y = self.y % self.world.size;
-    if (self.y < 0) self.y += self.world.size;
+-(int) directionVectorFromSquareColor {
+    return [self isBlackSquare] ? -1 : 1;
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

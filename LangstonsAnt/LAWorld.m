@@ -8,52 +8,72 @@
 
 #import "LAWorld.h"
 
+@interface LAWorld () {
+    NSMutableArray *squares;
+}
 
-#define WhiteSquare 0
-#define BlackSquare 1
+@end
 
 
 @implementation LAWorld
+@synthesize size = _size;
 
-+(LAWorld *) worldWithSize:(NSInteger)size {
-    LAWorld *world = [[LAWorld alloc] initWithSize:size];
-    return world;
-}
-
--(id) initWithSize:(NSInteger)size {
+-(id) initWithSize:(int)size {
     self = [super init];
     if (self) {
         self.size = size;
-        self.squares = [NSMutableArray arrayWithCapacity:size];
-        for (int x = 0; x < size; x++) {
-            NSMutableArray *row = [NSMutableArray arrayWithCapacity:size];
-            [self.squares addObject:row];
-            for (int y = 0; y < size; y++) {
-                [row addObject:[NSNumber numberWithInt:WhiteSquare]];
+
+        NSMutableArray *rows = [[NSMutableArray alloc] init];
+        for (int i = 0; i < size; i++) {
+            NSMutableArray *col = [[NSMutableArray alloc] init];
+            for (int j = 0; j < size; j++) {
+                [col addObject:[NSNumber numberWithBool:LAWhite]];
             }
+            [rows addObject:col];
         }
+        squares = rows;
     }
     return self;
 }
 
--(BOOL) isWhiteSquareAtX:(int)x Y:(int)y {
-    NSNumber *square = [[self.squares objectAtIndex:x] objectAtIndex:y];
-    return [square integerValue] == WhiteSquare;
+-(void) setSize:(int)size {
+    if ([self isValidSize:size]) {
+        _size = size;
+    }
+    else {
+        [[[NSException alloc] initWithName:NSInvalidArgumentException
+                                    reason:@"The world's size can't have a negative value"
+                                  userInfo:nil] raise];
+    }
 }
 
--(BOOL) isBlackSquareAtX:(int)x Y:(int)y {
-    NSNumber *square = [[self.squares objectAtIndex:x] objectAtIndex:y];
-    return [square integerValue] == BlackSquare;
+-(int) size {
+    return _size;
 }
 
--(void) setBlackSquareAtX:(int)x Y:(int)y {
-    [[self.squares objectAtIndex:x] setObject:[NSNumber numberWithInt:BlackSquare] atIndex:y];
-    [self.display updateSquareAtX:x Y:y toColor:[UIColor blackColor]];
+-(BOOL) isValidSize:(int)size {
+    return (size > 0);
 }
 
--(void) setWhiteSquareAtX:(int)x Y:(int)y {
-    [[self.squares objectAtIndex:x] setObject:[NSNumber numberWithInt:WhiteSquare] atIndex:y];
-    [self.display updateSquareAtX:x Y:y toColor:[UIColor whiteColor]];
+-(BOOL) valueForPoint:(CGPoint)point {
+    if (point.x > _size || point.y > _size) {
+        [[[NSException alloc] initWithName:NSInvalidArgumentException
+                                    reason:@"The square is outside the grids boundaries"
+                                  userInfo:nil] raise];
+    }
+    NSMutableArray *row = [squares objectAtIndex:point.x];
+    NSNumber *square = [row objectAtIndex:point.y];
+    return square.boolValue;
 }
+
+- (void)setSquareAtPoint:(CGPoint)point toValue:(BOOL)value {
+    NSMutableArray *row = [squares objectAtIndex:point.x];
+    [row replaceObjectAtIndex:point.y withObject:[NSNumber numberWithBool:value]];
+}
+
+- (void)toggleSquare:(CGPoint)point {
+    [self setSquareAtPoint:point toValue:![self valueForPoint:point]];
+}
+
 
 @end

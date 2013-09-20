@@ -8,125 +8,143 @@
 
 #import <XCTest/XCTest.h>
 #import "LAAnt.h"
+#import "LAWorld.h"
+@interface LAAntTests : XCTestCase {
+    LAWorld *world;
+    LAAnt *ant;
 
-@interface LAAntTests : XCTestCase
-@property (strong, nonatomic) LAWorld *world;
-@property (strong, nonatomic) LAAnt *ant;
+}
 @end
 
 @implementation LAAntTests
-
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
-    self.world = [LAWorld worldWithSize:10];
-    self.ant = [LAAnt antInWorld:self.world];
+    world = [[LAWorld alloc] initWithSize:30];
+    ant = [LAAnt antWithWorld:world];
 }
 
--(void) takeSteps:(int)times {
-    for (int i = 0; i < times; i++) {
-        [self.ant step];
+-(void) takeSteps:(int)numberOfSteps {
+    for (int i = 0; i < numberOfSteps; i++) {
+        [ant step];
     }
 }
 
-
-#pragma mark RULES
--(void) testAnAntCanBeCreatedInAWorld {
-    XCTAssertEqual(self.ant.world,self.world, @"the ant should be in the world");
+- (void) testAntCanBeInitedWithAWorld {
+    XCTAssertEqualObjects(world, ant.world, @"the ant must be inited with a world object.");
 }
 
--(void) testTheAntShouldStartInTheCenter {
-    XCTAssertTrue(self.ant.x == 5, @"it starts in the middle row");
-    XCTAssertTrue(self.ant.y == 5, @"it starts in the middle collumn");
+-(void) testTheAntMustBeInitedWithAWorld {
+    XCTAssertThrowsSpecificNamed([LAAnt antWithWorld:nil], NSException, NSInvalidArgumentException, @"The ant must have a world");
+}
+
+- (void) testAntMustStartInTheCenterOfTheWorld {
+    LAWorld *world1 = [[LAWorld alloc] initWithSize:4];
+    LAAnt *ant1 = [LAAnt antWithWorld:world1];
+    LAWorld *world2 = [[LAWorld alloc] initWithSize:8];
+    LAAnt *ant2 = [LAAnt antWithWorld:world2];
+    CGPoint position1 = ant1.position;
+    CGPoint position2 = ant2.position;
+    
+    XCTAssertEqual(CGPointMake(2, 2),position1, @"The ant must start in the center of the world");
+    XCTAssertEqual(CGPointMake(4, 4),position2, @"The ant must start in the center of the world");
+}
+
+- (void) testAntMustStartInTheCenterOfWorldWithAnOddSize {
+    LAWorld *world1 = [[LAWorld alloc] initWithSize:3];
+    LAAnt *ant1 = [LAAnt antWithWorld:world1];
+    LAWorld *world2 = [[LAWorld alloc] initWithSize:7];
+    LAAnt *ant2 = [LAAnt antWithWorld:world2];
+    CGPoint position1 = ant1.position;
+    CGPoint position2 = ant2.position;
+    
+    XCTAssertEqual(CGPointMake(1, 1),position1, @"The ant must start in the center of a world with and odd size");
+    XCTAssertEqual(CGPointMake(3, 3),position2, @"The ant must start in the center of a world with and odd size");
 }
 
 -(void) testTheAntStartsFacingNorth {
-    XCTAssertTrue(self.ant.direction == laNORTH, @"it faces north at the start");
+    XCTAssertEqual(ant.direction,LANorth, @"its direction is north");
 }
 
--(void) testTheAntTakesOneStep {
-    [self.ant step];
+-(void) testTheAntCanTakeOneStep {
+    [ant step];
     
-    XCTAssertTrue(self.ant.x == 4, @"since the first square is white, it turns left and takes a step West");
-    XCTAssertTrue(self.ant.y == 5, @"it stays in the same row");
-    XCTAssertTrue([self.world isBlackSquareAtX:5 Y:5], @"the last square the ant was in should now be black");
+    XCTAssertEqual(CGPointMake(14, 15),ant.position, @"it takes one step to the left");
+    XCTAssertEqual(LABlack, [ant.world valueForPoint:CGPointMake(15, 15)], @"the previous square is now black");
 }
 
--(void) testTheAntTakesTwoSteps {
+-(void) testTheAntCanTakeTwoSteps {
     [self takeSteps:2];
-    
-    XCTAssertTrue(self.ant.x == 4, @"another left turn keeps it in the same collumn");
-    XCTAssertTrue(self.ant.y == 6, @"now it is going South, so the row increments");
-    XCTAssertTrue([self.world isBlackSquareAtX:4 Y:5], @"the last square the ant was in should now be black");
+
+    XCTAssertEqual(CGPointMake(14, 16),ant.position, @"it takes one step down");
+    XCTAssertEqual(LABlack, [ant.world valueForPoint:CGPointMake(14, 15)], @"the previous square is now black");
 }
 
--(void) testTheAntTakesThreeSteps {
+-(void) testTheAntCanTakeThreeSteps {
     [self takeSteps:3];
     
-    XCTAssertTrue(self.ant.x == 5, @"another left turn keeps means it is going East");
-    XCTAssertTrue(self.ant.y == 6, @"so it stays in the same row");
-    XCTAssertTrue([self.world isBlackSquareAtX:4 Y:6], @"the last square the ant was in should now be black");
+    XCTAssertEqual(CGPointMake(15, 16),ant.position, @"it takes one step to the right");
+    XCTAssertEqual(LABlack, [ant.world valueForPoint:CGPointMake(14, 16)], @"the previous square is now black");
 }
 
--(void) testTheAntTakesFourSteps {
+-(void) testTheAntCanTakeFourSteps {
     [self takeSteps:4];
     
-    XCTAssertTrue(self.ant.x == 5, @"now we are back facing North, where we started");
-    XCTAssertTrue(self.ant.y == 5, @"in the same row");
-    XCTAssertTrue([self.world isBlackSquareAtX:5 Y:6], @"the last square the ant was in should now be black");
+    XCTAssertEqual(CGPointMake(15, 15),ant.position, @"it takes one step to the right");
+    XCTAssertEqual(LABlack, [ant.world valueForPoint:CGPointMake(15, 16)], @"the previous square is now black");
 }
 
--(void) testTheAntTakesFiveSteps {
+-(void) testTheAntCanTakeFiveSteps {
     [self takeSteps:5];
+    XCTAssertEqual(CGPointMake(16, 15),ant.position, @"it takes one step to the right");
     
-    XCTAssertTrue(self.ant.x == 6, @"since the start square is now black, we will turn right and go East");
-    XCTAssertTrue(self.ant.y == 5, @"in the same row");
-    XCTAssertTrue([self.world isWhiteSquareAtX:5 Y:5], @"since the square was black, it should now be white");
+    XCTAssertEqual(LAWhite, [ant.world valueForPoint:CGPointMake(15, 15)], @"the previous square is now white");
 }
 
-#pragma mark Warp to the otherside of the World
-
--(void) testTheAntCanWarpEastAroundTheWorld{
-    self.ant.x = 9;
-    self.ant.y = 5;
-    self.ant.direction = laSOUTH;
-    
-    [self.ant step];
-    
-    XCTAssertTrue(self.ant.x == 0, @"the ant will warp horizontally to the otherside of the world");
-    XCTAssertTrue(self.ant.y == 5, @"which doesn't affact its vertical position");
-}
-
--(void) testTheAntCanWarpNorthAroundTheWorld{
-    self.ant.x = 5;
-    self.ant.y = 0;
-    self.ant.direction = laEAST;
-    
-    [self.ant step];
-    
-    XCTAssertTrue(self.ant.x == 5, @"the ant will warp North which doesn't affect the horizontal position");
-    XCTAssertTrue(self.ant.y == 9, @"but it warps vertically around the world");
-}
-
--(void) testTheAntCanWarpWestAroundTheWorld{
-    self.ant.x = 0;
-    self.ant.y = 5;
-    self.ant.direction = laNORTH;
-    
-    [self.ant step];
-    
-    XCTAssertTrue(self.ant.x == 9, @"the ant will warp West around the world");
-    XCTAssertTrue(self.ant.y == 5, @"which doesn't affect its vertical postion");
-}
-
--(void) testTheAntCanWarpSouthAroundTheWorld{
-    self.ant.x = 5;
-    self.ant.y = 9;
-    self.ant.direction = laWEST;
-    
-    [self.ant step];
-    
-    XCTAssertTrue(self.ant.x == 5, @"the ant will warp South which doesn't affect the horizontal position");
-    XCTAssertTrue(self.ant.y == 0, @"but it warps vertically around the world");
-}
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
