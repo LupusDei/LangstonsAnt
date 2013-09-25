@@ -18,10 +18,28 @@
 @interface LAAnt()
 @property NSInteger x;
 @property NSInteger y;
-@property double radialDirection;
 @end
 
 @implementation LAAnt
+
++ (CGFloat)radiansForDirection:(LADirection)direction {
+    CGFloat radians;
+    switch (direction) {
+        case LANorth:
+            radians = M_PI_2;
+            break;
+        case LAEast:
+            radians = 0;
+            break;
+        case LASouth:
+            radians = M_PI_2 * -1;
+            break;
+        case LAWest:
+            radians = M_PI;
+            break;
+    }
+    return radians;
+}
 
 + (LAAnt *)antWithWorld:(LAWorld *)world {
     LAAnt *ant = [[LAAnt alloc] init];
@@ -33,7 +51,7 @@
     ant.world = world;
     ant.x = ant.world.size * .5;
     ant.y = ant.world.size * .5;
-    ant.radialDirection = M_PI_2;
+    ant.radialDirection = (CGFloat)M_PI_2;
     return ant;
 }
 
@@ -41,12 +59,40 @@
     return CGPointMake(self.x, self.y);
 }
 
+-(void) setPosition:(CGPoint)point {
+    self.x = point.x;
+    self.y = point.y;
+}
+
+- (void)setDirection:(LADirection)direction {
+    self.radialDirection = [LAAnt radiansForDirection:direction];
+}
+
 - (void)step {
     CGPoint lastPos = self.position;
-    self.radialDirection += M_PI_2 * [self directionVectorFromSquareColor];
-    self.x = self.x + cos(self.radialDirection);
-    self.y = self.y - sin(self.radialDirection);
+    self.radialDirection += (CGFloat)M_PI_2 * [self directionVectorFromSquareColor];
+    if (self.radialDirection <= 2 * M_PI + 0.00001 || self.radialDirection >= 2 * M_PI - 0.00001 || self.radialDirection >= -2 * M_PI - 0.00001 || self.radialDirection <= -2 * M_PI + 0.00001) {
+        self.radialDirection = 0;
+    }
+    
+    self.x = self.x + cosf(self.radialDirection);
+    self.y = self.y - sinf(self.radialDirection);
     [self.world toggleSquare:lastPos];
+    
+    self.x = [self calculateModWithNegativeValue:self.x andModNumber:self.world.size];
+    self.y = [self calculateModWithNegativeValue:self.y andModNumber:self.world.size];
+}
+
+-(int) calculateModWithNegativeValue:(int)value andModNumber:(int)modNum {
+    value = value % modNum;
+    if (value < 0) {
+        value = [self adjustModAnswerForNegativeValue:value andModNumber:modNum];
+    }
+    return value;
+}
+
+- (int)adjustModAnswerForNegativeValue:(int)value andModNumber:(int)modNum {
+    return modNum + value;
 }
 
 - (BOOL)isBlackSquare {

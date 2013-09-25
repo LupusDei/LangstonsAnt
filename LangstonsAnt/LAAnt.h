@@ -19,12 +19,15 @@ typedef enum {
 
 @interface LAAnt : NSObject
 @property (nonatomic, strong) LAWorld *world;
-@property LADirection direction;
+@property (nonatomic, assign) CGFloat radialDirection;
 
 + (LAAnt *)antWithWorld:(LAWorld *)world;
 
--(CGPoint) position;
+- (CGPoint) position;
+- (void) setPosition:(CGPoint)point;
+- (void)setDirection:(LADirection)direction;
 - (void)step;
 - (BOOL)isBlackSquare;
+-(int) calculateModWithNegativeValue:(int)value andModNumber:(int)modNum;
 
 @end

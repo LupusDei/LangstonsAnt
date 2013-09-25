@@ -9,12 +9,32 @@
 #import <XCTest/XCTest.h>
 #import "LAWorld.h"
 
-@interface LAWorldTests : XCTestCase {
+@interface LAWorldTests : XCTestCase <LAWorldDisplay> {
     LAWorld *world;
+    BOOL toggledSquareToBlack;
+    BOOL toggledSquareToWhite;
+    int xOfToggledSquare;
+    int yOfToggledSquare;
+    BOOL isBlack;
 }
 @end
 
 @implementation LAWorldTests
+
+#pragma LAWorldDisplay methods
+-(void) setPointOfToggledSquare:(CGPoint)point {
+    xOfToggledSquare    = point.x;
+    yOfToggledSquare    = point.y;
+}
+
+-(void) setSquareOfWorld:(LAWorld *)world toBlackAtPoint:(CGPoint)point {
+    [self setPointOfToggledSquare:point];
+    toggledSquareToBlack  = YES;
+}
+-(void) setSquareOfWorld:(LAWorld *)world toWhiteAtPoint:(CGPoint)point {
+    toggledSquareToWhite  = YES;
+    [self setPointOfToggledSquare:point];
+}
 
 - (void)setUp {
     [super setUp];
@@ -67,4 +87,82 @@
     XCTAssertEqual(LABlack, value, @"The color was defaulted white, now it is black");
 }
 
+- (void) testThatTheWorldHasADelegate {
+    world.display = self;
+    XCTAssertNotNil(world.display, @"The world has a delegate");
+}
+
+- (void) testThatTheWorldDisplayReceivesDataWhenSquareChangesColor {
+    world.display = self;
+    [world toggleSquare:CGPointMake(12, 13)];
+    
+    XCTAssertTrue(toggledSquareToBlack, @"the delegate should have recieved a message");
+    XCTAssertEqual(12,xOfToggledSquare, @"it toggled the correct square");
+    XCTAssertEqual(13,yOfToggledSquare, @"it toggled the correct square");
+}
+
+- (void) testWorldDisplayReceivesColorValue {
+    world.display = self;
+    [world toggleSquare:CGPointMake(12, 13)];
+    XCTAssertTrue(toggledSquareToBlack, @"it will color the square black");
+    [world toggleSquare:CGPointMake(12, 13)];
+    XCTAssertTrue(toggledSquareToWhite, @"it will color the square white");
+}
+
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -11,7 +11,14 @@
 #define LAWhite NO
 #define LABlack YES
 
+@class LAWorld;
+@protocol LAWorldDisplay
+-(void) setSquareOfWorld:(LAWorld *)world toBlackAtPoint:(CGPoint)point;
+-(void) setSquareOfWorld:(LAWorld *)world toWhiteAtPoint:(CGPoint)point;
+@end
+
 @interface LAWorld : NSObject
+@property (nonatomic, weak) id<LAWorldDisplay> display;
 
 @property int size;
 

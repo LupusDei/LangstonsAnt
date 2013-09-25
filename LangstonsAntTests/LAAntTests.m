@@ -62,7 +62,7 @@
 }
 
 -(void) testTheAntStartsFacingNorth {
-    XCTAssertEqual(ant.direction,LANorth, @"its direction is north");
+    XCTAssertEqual((CGFloat)M_PI_2, ant.radialDirection, @"its direction is north");
 }
 
 -(void) testTheAntCanTakeOneStep {
@@ -82,7 +82,7 @@
 -(void) testTheAntCanTakeThreeSteps {
     [self takeSteps:3];
     
-    XCTAssertEqual(CGPointMake(15, 16),ant.position, @"it takes one step to the right");
+    XCTAssertEqual(CGPointMake(15, 16), ant.position, @"it takes one step to the right");
     XCTAssertEqual(LABlack, [ant.world valueForPoint:CGPointMake(14, 16)], @"the previous square is now black");
 }
 
@@ -95,12 +95,73 @@
 
 -(void) testTheAntCanTakeFiveSteps {
     [self takeSteps:5];
-    XCTAssertEqual(CGPointMake(16, 15),ant.position, @"it takes one step to the right");
     
+    XCTAssertEqual(CGPointMake(16, 15),ant.position, @"it takes one step to the right");
     XCTAssertEqual(LAWhite, [ant.world valueForPoint:CGPointMake(15, 15)], @"the previous square is now white");
 }
 
+- (void) testTheAntCanTakeSixSteps {
+    [self takeSteps:6];
+
+    XCTAssertEqual(CGPointMake(16, 14), ant.position, @"The ant should take on step up");
+    XCTAssertEqual(LABlack, [ant.world valueForPoint:CGPointMake(16, 15)], @"the previous square is now white");
+}
+
+- (void) testTheAntCannotLeaveTheWorldWithoutWrappingToTheOppositeSide {
+    [ant setPosition:CGPointMake(0, 0)];
+    [ant step];
+    XCTAssertEqual(CGPointMake(world.size-1, 0), [ant position], @"The ants position should be 29,0");
+
+    [ant setDirection:LASouth];
+    [ant step];
+    XCTAssertEqual(CGPointMake(0, 0), [ant position], @"The ant's position should no be 0,0");
+}
+
+- (void) testTheAntWillWrapVerticallyWhenAtTheTop {
+    [ant setPosition:CGPointMake(15, 0)];
+    [ant setDirection:LAEast];
+    [ant step];
+    XCTAssertEqual(CGPointMake(15, 29), [ant position], @"The ant started facing east, turned left to face north, and wrapped around the world ending at the bottom of the grid");
+    
+    [ant setDirection:LAWest];
+    [ant step];
+    XCTAssertEqual(CGPointMake(15, 0), [ant position], @"The ant's position should no be 15, 0");
+
+}
+
+- (void) testAntCanMoveInAllDirectionsFromZeroZeroAnDirectionIsEast {
+    [ant setPosition:CGPointMake(0, 0)];
+    [ant setDirection:LAEast];
+    [ant step];
+    XCTAssertEqual(CGPointMake(0, 29), ant.position, @"The ant should be in the bottom left");
+}
+
+- (void) testAntCanMoveInAllDirectionsFromZeroZeroAnDirectionWest {
+    [ant setPosition:CGPointMake(0, 0)];
+    [ant setDirection:LANorth];
+    [ant step];
+    XCTAssertEqual(CGPointMake(29, 0), ant.position, @"The ant should be in square 1,0");
+}
+
+- (void) testWorldIsReturningCorrectModuloForNegativeOne {
+    int modVal = [ant calculateModWithNegativeValue:-1 andModNumber:30];
+    XCTAssertEqual(29, modVal, @"The value for -1 should be corrected to 29");
+}
+- (void) testWorldIsReturningCorrectModuloForThirty {
+    int modVal = [ant calculateModWithNegativeValue:30 andModNumber:30];
+    XCTAssertEqual(0, modVal, @"The value for 30 should be corrected to 0");
+}
+
 @end
+
+
+
+
+
+
+
+
+
 
 
 
