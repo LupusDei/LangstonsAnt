@@ -25,6 +25,7 @@
 		62C0857017C971CF00CFA8AB /* LAAnt.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0856F17C971CF00CFA8AB /* LAAnt.m */; };
 		62C0857317C99DA200CFA8AB /* LAWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0857217C99DA200CFA8AB /* LAWorld.m */; };
 		62C0857517C99DBD00CFA8AB /* LAWorldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C0857417C99DBD00CFA8AB /* LAWorldTests.m */; };
+		D252523C17F5D3E00000FB26 /* LABlackWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = D252523B17F5D3E00000FB26 /* LABlackWorld.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		62C0857117C99DA200CFA8AB /* LAWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAWorld.h; sourceTree = "<group>"; };
 		62C0857217C99DA200CFA8AB /* LAWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAWorld.m; sourceTree = "<group>"; };
 		62C0857417C99DBD00CFA8AB /* LAWorldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAWorldTests.m; sourceTree = "<group>"; };
+		D252523A17F5D3E00000FB26 /* LABlackWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABlackWorld.h; sourceTree = "<group>"; };
+		D252523B17F5D3E00000FB26 /* LABlackWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LABlackWorld.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +148,7 @@
 		62C0855717C95EAB00CFA8AB /* LangstonsAntTests */ = {
 			isa = PBXGroup;
 			children = (
+				D252523917F5D3C40000FB26 /* mocks */,
 				62C0855817C95EAB00CFA8AB /* Supporting Files */,
 				62C0856917C96FAD00CFA8AB /* LAAntTests.m */,
 				62C0857417C99DBD00CFA8AB /* LAWorldTests.m */,
@@ -183,6 +187,15 @@
 				62C0857217C99DA200CFA8AB /* LAWorld.m */,
 			);
 			name = "the brains";
+			sourceTree = "<group>";
+		};
+		D252523917F5D3C40000FB26 /* mocks */ = {
+			isa = PBXGroup;
+			children = (
+				D252523A17F5D3E00000FB26 /* LABlackWorld.h */,
+				D252523B17F5D3E00000FB26 /* LABlackWorld.m */,
+			);
+			name = mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D252523C17F5D3E00000FB26 /* LABlackWorld.m in Sources */,
 				62C0856A17C96FAD00CFA8AB /* LAAntTests.m in Sources */,
 				62C0857517C99DBD00CFA8AB /* LAWorldTests.m in Sources */,
 			);
@@ -491,6 +505,7 @@
 				62C0856317C95EAB00CFA8AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		62C0856417C95EAB00CFA8AB /* Build configuration list for PBXNativeTarget "LangstonsAntTests" */ = {
 			isa = XCConfigurationList;
@@ -499,6 +514,7 @@
 				62C0856617C95EAB00CFA8AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -17,7 +17,10 @@
 -(void) setSquareOfWorld:(LAWorld *)world toWhiteAtPoint:(CGPoint)point;
 @end
 
-@interface LAWorld : NSObject
+@interface LAWorld : NSObject {
+    NSMutableArray *squares;
+}
+
 @property (nonatomic, weak) id<LAWorldDisplay> display;
 
 @property int size;

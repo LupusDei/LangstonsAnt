@@ -23,11 +23,12 @@ typedef enum {
 
 + (LAAnt *)antWithWorld:(LAWorld *)world;
 
-- (CGPoint) position;
-- (void) setPosition:(CGPoint)point;
+- (CGPoint)position;
+- (void)setPosition:(CGPoint)point;
 - (void)setDirection:(LADirection)direction;
 - (void)step;
 - (BOOL)isBlackSquare;
--(int) calculateModWithNegativeValue:(int)value andModNumber:(int)modNum;
+- (int)calculateModWithNegativeValue:(int)value andModNumber:(int)modNum;
+- (CGFloat)correctAngleWhenGreaterThan2PI:(CGFloat)angle;
 
 @end

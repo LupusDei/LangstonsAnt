@@ -69,21 +69,22 @@
 }
 
 - (void)step {
-    CGPoint lastPos = self.position;
-    self.radialDirection += (CGFloat)M_PI_2 * [self directionVectorFromSquareColor];
-    if (self.radialDirection <= 2 * M_PI + 0.00001 || self.radialDirection >= 2 * M_PI - 0.00001 || self.radialDirection >= -2 * M_PI - 0.00001 || self.radialDirection <= -2 * M_PI + 0.00001) {
-        self.radialDirection = 0;
-    }
-    
-    self.x = self.x + cosf(self.radialDirection);
-    self.y = self.y - sinf(self.radialDirection);
-    [self.world toggleSquare:lastPos];
+    CGPoint currentPosition = self.position;
+
+    self.radialDirection += M_PI_2 * [self directionVectorFromSquareColor];
+    [self.world toggleSquare:currentPosition];
+
+    self.x = self.x + (int)cosf(self.radialDirection);
+    self.y = self.y - (int)sinf(self.radialDirection);
+        
+    self.radialDirection = [self correctAngleWhenGreaterThan2PI:self.radialDirection];
     
     self.x = [self calculateModWithNegativeValue:self.x andModNumber:self.world.size];
     self.y = [self calculateModWithNegativeValue:self.y andModNumber:self.world.size];
+
 }
 
--(int) calculateModWithNegativeValue:(int)value andModNumber:(int)modNum {
+-(int)calculateModWithNegativeValue:(int)value andModNumber:(int)modNum {
     value = value % modNum;
     if (value < 0) {
         value = [self adjustModAnswerForNegativeValue:value andModNumber:modNum];
@@ -99,8 +100,13 @@
     return [self.world valueForPoint:[self position]];
 }
 
--(int) directionVectorFromSquareColor {
+-(int)directionVectorFromSquareColor {
     return [self isBlackSquare] ? -1 : 1;
+}
+
+- (CGFloat)correctAngleWhenGreaterThan2PI:(CGFloat)angle {
+    CGFloat degrees = (NSInteger)(angle * 180 / M_PI) % 360;
+    return degrees * (M_PI / 180);
 }
 
 @end

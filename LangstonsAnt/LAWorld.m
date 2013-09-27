@@ -8,9 +8,7 @@
 
 #import "LAWorld.h"
 
-@interface LAWorld () {
-    NSMutableArray *squares;
-}
+@interface LAWorld ()
 @end
 
 
@@ -71,8 +69,8 @@
 }
 
 - (void)toggleSquare:(CGPoint)point {
-    BOOL squareIsBlack = [self valueForPoint:point] == LABlack ? YES : NO;
-    if (squareIsBlack) {
+//    BOOL squareIsBlack = [self valueForPoint:point] == LABlack ? YES : NO;
+    if ([self valueForPoint:point] == LABlack) {
         [self setSquareAtPoint:point toValue:LAWhite];
         [self.display setSquareOfWorld:self toWhiteAtPoint:point];
     }

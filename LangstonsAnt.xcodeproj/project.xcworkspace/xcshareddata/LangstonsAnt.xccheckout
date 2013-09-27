@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C9640917-DE81-4D8F-A785-05994FFB6EEA</string>
+	<key>IDESourceControlProjectName</key>
+	<string>LangstonsAnt</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E5BAAC65-1149-4374-8EBE-CD766B1EBE81</key>
+		<string>https://github.com/LupusDei/LangstonsAnt.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>LangstonsAnt.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E5BAAC65-1149-4374-8EBE-CD766B1EBE81</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/LupusDei/LangstonsAnt.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E5BAAC65-1149-4374-8EBE-CD766B1EBE81</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E5BAAC65-1149-4374-8EBE-CD766B1EBE81</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LangstonsAnt</string>
+		</dict>
+	</array>
+</dict>
+</plist>
