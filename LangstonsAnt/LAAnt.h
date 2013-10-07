@@ -9,23 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "LAWorld.h"
 
-typedef enum {
-    laNORTH = 0,
-    laEAST = 1,
-    laSOUTH = 2,
-    laWEST = 3
-} laDIRECTION;
 
 @interface LAAnt : NSObject
+@property char direction;
 
-@property (nonatomic, strong) LAWorld *world;
-@property int x;
-@property int y;
-@property laDIRECTION direction;
++(LAAnt *) newAntAtX:(int)x andY:(int)y;
++(LAAnt *) antWithWorld:(LAWorld *)world;
 
+-(NSDictionary *) step:(NSDictionary *)world;
 
-+(LAAnt *) antInWorld:(LAWorld *)world;
-
--(void) step;
+-(NSArray *) location;
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LAAnt.h"
 
-@interface LAViewController : UIViewController <LAWorldDisplay>
+@interface LAViewController : UIViewController <WorldListener>
 @property (nonatomic, strong) NSMutableArray *gridViews;
 @property (strong, nonatomic) UIView *gridContainer;
 @property (weak, nonatomic) IBOutlet UILabel *stepCountLabel;

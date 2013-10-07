@@ -8,52 +8,45 @@
 
 #import "LAWorld.h"
 
-
-#define WhiteSquare 0
-#define BlackSquare 1
-
-
 @implementation LAWorld
 
-+(LAWorld *) worldWithSize:(NSInteger)size {
-    LAWorld *world = [[LAWorld alloc] initWithSize:size];
+bool **squares;
+
++(LAWorld *) newWorldWithSize:(int) size andListener: (id <WorldListener>)listener
+{
+    LAWorld *world =  [[LAWorld alloc] init];
+    world.size = size;
+    world.worldListener = listener;
+    squares = malloc(size * sizeof(bool*));
+    for(int i = 0; i < size; i++)
+    {
+        squares[i] = malloc(size * sizeof(bool));
+        for(int j = 0; j < size; j++) {
+            squares[i][j] = true;
+        }
+    }
     return world;
 }
 
--(id) initWithSize:(NSInteger)size {
-    self = [super init];
-    if (self) {
-        self.size = size;
-        self.squares = [NSMutableArray arrayWithCapacity:size];
-        for (int x = 0; x < size; x++) {
-            NSMutableArray *row = [NSMutableArray arrayWithCapacity:size];
-            [self.squares addObject:row];
-            for (int y = 0; y < size; y++) {
-                [row addObject:[NSNumber numberWithInt:WhiteSquare]];
-            }
+-(BOOL) isSquareWhiteAtX: (int) x andY: (int) y {
+    return squares[x][y];
+}
+-(BOOL) isSquareBlackAtX: (int) x andY: (int) y {
+    return !squares[x][y];
+}
+
+-(void) toggleSquareAtX: (int) x andY: (int) y {
+    bool value = !squares[x][y];
+    squares[x][y] = value;
+    [self.worldListener updateSquareAtX:x Y:y to:value];
+}
+
+-(void) paintBlack {
+    for (int i = 0; i < self.size; i++) {
+        for(int j = 0; j < self.size; j++) {
+            squares[i][j] = false;
         }
     }
-    return self;
-}
-
--(BOOL) isWhiteSquareAtX:(int)x Y:(int)y {
-    NSNumber *square = [[self.squares objectAtIndex:x] objectAtIndex:y];
-    return [square integerValue] == WhiteSquare;
-}
-
--(BOOL) isBlackSquareAtX:(int)x Y:(int)y {
-    NSNumber *square = [[self.squares objectAtIndex:x] objectAtIndex:y];
-    return [square integerValue] == BlackSquare;
-}
-
--(void) setBlackSquareAtX:(int)x Y:(int)y {
-    [[self.squares objectAtIndex:x] setObject:[NSNumber numberWithInt:BlackSquare] atIndex:y];
-    [self.display updateSquareAtX:x Y:y toColor:[UIColor blackColor]];
-}
-
--(void) setWhiteSquareAtX:(int)x Y:(int)y {
-    [[self.squares objectAtIndex:x] setObject:[NSNumber numberWithInt:WhiteSquare] atIndex:y];
-    [self.display updateSquareAtX:x Y:y toColor:[UIColor whiteColor]];
 }
 
 @end

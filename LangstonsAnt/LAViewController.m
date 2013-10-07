@@ -71,7 +71,7 @@ dispatch_queue_t runQueue;
 }
 
 -(void) stepAnt {
-    [self.ant step];
+    [self.ant step:nil];
 }
 
 -(void) resetGameWithSize:(NSInteger)size {
@@ -111,14 +111,14 @@ dispatch_queue_t runQueue;
 }
 
 -(void) createAntInWorldWithSize:(NSInteger)size {
-    self.world = [LAWorld worldWithSize:size];
-    self.world.display = self;
-    self.ant = [LAAnt antInWorld:self.world];
+    self.world = [LAWorld newWorldWithSize:size andListener:self];
+    self.ant = [LAAnt antWithWorld:self.world];
 }
 
 #pragma mark World Display Delegate Method
--(void) updateSquareAtX:(int)x Y:(int)y toColor:(UIColor *)color {
+-(void) updateSquareAtX:(int)x Y:(int)y to:(BOOL)white {
     dispatch_async(dispatch_get_main_queue(), ^{
+        UIColor *color = white ? [UIColor whiteColor] : [UIColor blackColor];
         UIView *square = [[self.gridViews objectAtIndex:x] objectAtIndex:y];
         square.backgroundColor = color;
         self.stepCount ++;
